@@ -3,6 +3,8 @@ import { IUserConfig } from './interfaces/config'
 import { TData } from './interfaces/data'
 import { StyleConfig } from './config'
 
+import ArrowMaker from './components/ArrowMaker'
+
 interface IProps{
   data: TData,
   config?: IUserConfig
@@ -40,7 +42,7 @@ export default function Uml ({ data, config }: IProps) {
   const [linePos, setLinePos] = useState<TLinePos>()
   const unitRef = useRef(setupUnitRef(data))
   const {
-    lineStyle: { arrowSize, color },
+    lineStyle: { color },
     blockStyle: {
       hGap,
       width,
@@ -111,20 +113,7 @@ export default function Uml ({ data, config }: IProps) {
 
   return (
     <svg width="800">
-      <defs>
-        <marker
-          id="arrow"
-          orient="auto"
-          markerHeight={arrowSize * 2}
-          markerWidth={arrowSize * 1.3}
-          refY={arrowSize}
-          refX={arrowSize * 1.3}
-        >
-          <path
-            d={`M0,0 V${arrowSize * 2} L${arrowSize * 1.3},${arrowSize} Z`}
-          />
-        </marker>
-      </defs>
+      <ArrowMaker config={config}/>
 
       <g>
         {data.map((d, dIdx) => {
