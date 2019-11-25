@@ -6,6 +6,7 @@ module.exports = {
     },
     "extends": [
         "plugin:react/recommended",
+        "plugin:jest/recommended",
         "standard"
     ],
     "globals": {
@@ -22,6 +23,7 @@ module.exports = {
     },
     "plugins": [
         "react",
+        "jest",
         "@typescript-eslint"
     ],
     "rules": {
