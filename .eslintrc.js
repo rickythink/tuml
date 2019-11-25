@@ -27,5 +27,14 @@ module.exports = {
         "@typescript-eslint"
     ],
     "rules": {
-    }
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/46#issuecomment-470486034
+    overrides: [
+        {
+          files: ['*.ts', '*.tsx'],
+          rules: {
+            '@typescript-eslint/no-unused-vars': [2, { args: 'none' }]
+          }
+        }
+      ]
 };
