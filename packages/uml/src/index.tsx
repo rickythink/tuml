@@ -1,4 +1,5 @@
 import React, { useRef, useEffect, useState, createRef } from 'react'
+
 import { IUserConfig } from './interfaces/config'
 import { TData } from './interfaces/data'
 import { StyleConfig } from './config'
@@ -40,6 +41,8 @@ type TLinePos = Array<IPos>
 
 export default function Uml ({ data, config }: IProps) {
   const [linePos, setLinePos] = useState<TLinePos>()
+  const div = useRef<HTMLDivElement>(null)
+  const [matrix, setMatrix] = useState([1, 0, 0, 1, 0, 0])
   const unitRef = useRef(setupUnitRef(data))
   const {
     lineStyle: { color },
@@ -57,6 +60,12 @@ export default function Uml ({ data, config }: IProps) {
     const computedLinePos = computeLinePos(data)
     setLinePos([...computedLinePos])
   }, [data])
+
+  useEffect(() => {
+    const divEl = div.current
+    divEl && divEl.addEventListener('wheel', handleWheelScale)
+    return () => { divEl && divEl.removeEventListener('wheel', handleWheelScale) }
+  }, [matrix])
 
   function setupUnitRef (data: TData) {
     const unitRef:IRef = {}
@@ -111,55 +120,78 @@ export default function Uml ({ data, config }: IProps) {
     return computedLinePos
   }
 
+  function handleWheelScale (event: WheelEvent) {
+    if ((event.ctrlKey || event.altKey) && div && div.current) {
+      event.preventDefault()
+      // ref: https://github.com/aleofreddi/svgpan/blob/d59255197236e5936650e4cd9b1ec0b88f199188/svgpan.js#L146
+      const divEl = div.current
+      const { offsetLeft, offsetTop } = divEl
+      const { clientX, clientY } = event
+      // 1.2 and 360 control the sensitivity
+      const zoom = Math.pow(1.2, -event.deltaY / 360)
+      const ctm = new DOMMatrix(matrix)
+      let mouse = new DOMPoint(clientX - offsetLeft, clientY - offsetTop)
+      mouse = mouse.matrixTransform(ctm.inverse())
+      const trans = new DOMMatrix().translate(mouse.x, mouse.y).scale(zoom).translate(-mouse.x, -mouse.y)
+      setMatrix(dmatrix2Array(ctm.multiply(trans)))
+    }
+  }
+
+  function dmatrix2Array (dmatrix: DOMMatrix) {
+    return [dmatrix.a, dmatrix.b, dmatrix.c, dmatrix.d, dmatrix.e, dmatrix.f]
+  }
+
   return (
-    <svg width="800">
-      <ArrowMaker config={config}/>
+    <div ref={div} style={{ width: '100%' }}>
+      <svg width="100%">
+        <ArrowMaker config={config}/>
 
-      <g>
-        {data.map((d, dIdx) => {
-          return Object.keys(d.values).map((k, kIdx) => {
-            return (
-              <g key={`${d.name}-${k}`}>
-                <rect
-                  ref={unitRef.current[d.name][k]}
-                  x={dIdx * hGap}
-                  y={0 + kIdx * (height + borderWidth)}
-                  width={width}
-                  height={height}
-                  fill={backgroundColor}
-                />
-                <text>
-                  <tspan
-                    x={dIdx * hGap + padding}
-                    y={0 + kIdx * (height + borderWidth) + (height - padding)}
-                  >
-                    {k}
-                  </tspan>
-                </text>
-              </g>
-            )
-          })
-        })}
-      </g>
+        <g transform={`matrix(${matrix[0]},${matrix[1]},${matrix[2]},${matrix[3]},${matrix[4]},${matrix[5]})`}>
+          {data.map((d, dIdx) => {
+            return Object.keys(d.values).map((k, kIdx) => {
+              return (
+                <g key={`${d.name}-${k}`}>
+                  <rect
+                    ref={unitRef.current[d.name][k]}
+                    x={dIdx * hGap}
+                    y={0 + kIdx * (height + borderWidth)}
+                    width={width}
+                    height={height}
+                    fill={backgroundColor}
+                  />
+                  <text>
+                    <tspan
+                      x={dIdx * hGap + padding}
+                      y={0 + kIdx * (height + borderWidth) + (height - padding)}
+                    >
+                      {k}
+                    </tspan>
+                  </text>
+                </g>
+              )
+            })
+          })}
+        </g>
 
-      {linePos && linePos.map((l, idx) => {
-        console.log(linePos)
-        return (
-          <g key={`l-${idx}`}>
-            <path
-              d={`
+        {linePos && linePos.map((l, idx) => {
+          return (
+            <g key={`l-${idx}`}>
+              <path
+                d={`
                 M${l.start.x},${l.start.y} 
                 C${l.ca.x},${l.ca.y} ${l.cb.x},${l.cb.y} 
                 ${l.end.x},${l.end.y}
               `}
-              markerEnd="url(#arrow)"
-              stroke={color}
-              strokeDasharray="4 2"
-              fill="none"
-            />
-          </g>
-        )
-      })}
-    </svg>
+                markerEnd="url(#arrow)"
+                stroke={color}
+                strokeDasharray="4 2"
+                fill="none"
+              />
+            </g>
+          )
+        })}
+      </svg>
+    </div>
+
   )
 }
