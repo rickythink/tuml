@@ -26,7 +26,7 @@ interface IPos{
   ca: {
     x: number,
     y: number
-  }
+  },
   cb: {
     x: number,
     y: number
