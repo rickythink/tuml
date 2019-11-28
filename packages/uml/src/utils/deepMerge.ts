@@ -1,10 +1,13 @@
 import { IUserConfig, IDefaultConfig } from '../interfaces/config'
 
-function isObject (item:object):boolean {
-  return (item && typeof item === 'object' && !Array.isArray(item))
+function isObject(item: object): boolean {
+  return item && typeof item === 'object' && !Array.isArray(item)
 }
 
-export function deepMerge<T extends IDefaultConfig, U extends IUserConfig> (target:T, ...sources:U[]):T {
+export function deepMerge<T extends IDefaultConfig, U extends IUserConfig>(
+  target: T,
+  ...sources: U[]
+): T {
   if (!sources.length) return target
   const source = sources.shift()
 

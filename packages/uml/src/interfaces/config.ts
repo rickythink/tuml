@@ -1,55 +1,55 @@
 export interface IUserConfig {
   lineStyle?: {
-    color?: string;
-    arrowSize?: number;
-  };
+    color?: string
+    arrowSize?: number
+  }
   blockStyle?: {
     header?: {
-      color?: string;
-      backgroundColor?: string;
-      height?: number;
-    };
+      color?: string
+      backgroundColor?: string
+      height?: number
+    }
     content?: {
-      color?: string;
-      backgroundColor?: string;
-      padding?: number;
-      height?: number;
-    };
+      color?: string
+      backgroundColor?: string
+      padding?: number
+      height?: number
+    }
     border?: {
-      width?: number;
-      color?: string;
-    };
-    radios?: number;
-    width?: number;
-    height?: number;
-    hGap?: number;
-    vGap?: number;
-  };
+      width?: number
+      color?: string
+    }
+    radios?: number
+    width?: number
+    height?: number
+    hGap?: number
+    vGap?: number
+  }
 }
 
 export interface IDefaultConfig {
   lineStyle: {
-    color: string;
-    arrowSize: number;
-  };
+    color: string
+    arrowSize: number
+  }
   blockStyle: {
     header: {
-      color: string;
-      backgroundColor: string;
-      height: number;
-    };
+      color: string
+      backgroundColor: string
+      height: number
+    }
     content: {
-      color: string;
-      backgroundColor: string;
-      padding: number;
-      height: number;
-    };
+      color: string
+      backgroundColor: string
+      padding: number
+      height: number
+    }
     border: {
-      width: number;
-      color: string;
-    };
-    width: number;
-    height: number;
-    hGap: number;
-  };
+      width: number
+      color: string
+    }
+    width: number
+    height: number
+    hGap: number
+  }
 }

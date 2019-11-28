@@ -1,16 +1,16 @@
 interface IDeps {
-  key: string;
-  name: string;
+  key: string
+  name: string
 }
 
 interface IBlockData {
-  name: string;
+  name: string
   values: {
-    [propName: string]: string;
-  };
+    [propName: string]: string
+  }
   deps?: {
-    [propName: string]: Array<IDeps>;
-  };
+    [propName: string]: Array<IDeps>
+  }
 }
 
 export type TData = Array<IBlockData>

@@ -4,7 +4,7 @@ import { render } from '@testing-library/react'
 import { TData } from '../interfaces/data'
 import Uml from '../index'
 
-const data:TData = [
+const data: TData = [
   {
     name: '1',
     values: { a: 'a', b: 'b', c: 'c', d: 'd' },

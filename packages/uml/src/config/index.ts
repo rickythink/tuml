@@ -2,7 +2,7 @@ import { IUserConfig, IDefaultConfig } from '../interfaces/config'
 import { deepMerge } from '../utils/'
 
 class StyleConfig {
-  config:IDefaultConfig = {
+  config: IDefaultConfig = {
     lineStyle: {
       color: '#333',
       arrowSize: 5
@@ -30,17 +30,15 @@ class StyleConfig {
     }
   }
 
-  constructor (userConfig ?: IUserConfig) {
+  constructor(userConfig?: IUserConfig) {
     if (userConfig) {
       this.config = deepMerge(this.config, userConfig)
     }
   }
 
-  getConfig () :IDefaultConfig {
+  getConfig(): IDefaultConfig {
     return this.config
   }
 }
 
-export {
-  StyleConfig
-}
+export { StyleConfig }
