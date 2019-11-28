@@ -183,26 +183,25 @@ export default function Uml({ data, config }: IProps) {
               )
             })
           })}
-        </g>
-
-        {linePos &&
-          linePos.map((l, idx) => {
-            return (
-              <g key={`l-${idx}`}>
-                <path
-                  d={`
+          {linePos &&
+            linePos.map((l, idx) => {
+              return (
+                <g key={`l-${idx}`}>
+                  <path
+                    d={`
                 M${l.start.x},${l.start.y} 
                 C${l.ca.x},${l.ca.y} ${l.cb.x},${l.cb.y} 
                 ${l.end.x},${l.end.y}
               `}
-                  markerEnd="url(#arrow)"
-                  stroke={color}
-                  strokeDasharray="4 2"
-                  fill="none"
-                />
-              </g>
-            )
-          })}
+                    markerEnd="url(#arrow)"
+                    stroke={color}
+                    strokeDasharray="4 2"
+                    fill="none"
+                  />
+                </g>
+              )
+            })}
+        </g>
       </svg>
     </div>
   )
