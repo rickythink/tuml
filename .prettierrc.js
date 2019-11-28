@@ -1,9 +1,8 @@
 module.exports = {
-  printWidth: 100,
+  printWidth: 80,
   tabWidth: 2,
   useTabs: false,
   singleQuote: true,
   semi: false,
-  bracketSpacing: true,
-  parser: 'babylon'
+  bracketSpacing: true
 }
