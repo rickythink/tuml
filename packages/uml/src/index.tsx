@@ -1,4 +1,5 @@
 import React, { useRef, useEffect, useState, createRef } from 'react'
+import { useSvgPan } from './hooks/useSvgPan'
 
 import { IUserConfig } from './interfaces/config'
 import { TData } from './interfaces/data'
@@ -41,8 +42,7 @@ type TLinePos = Array<IPos>
 
 export default function Uml({ data, config }: IProps) {
   const [linePos, setLinePos] = useState<TLinePos>()
-  const div = useRef<HTMLDivElement>(null)
-  const [matrix, setMatrix] = useState([1, 0, 0, 1, 0, 0])
+  const [div, matrix] = useSvgPan()
   const unitRef = useRef(setupUnitRef(data))
   const {
     lineStyle: { color },
@@ -60,14 +60,6 @@ export default function Uml({ data, config }: IProps) {
     const computedLinePos = computeLinePos(data)
     setLinePos([...computedLinePos])
   }, [data])
-
-  useEffect(() => {
-    const divEl = div.current
-    divEl && divEl.addEventListener('wheel', handleWheelScale)
-    return () => {
-      divEl && divEl.removeEventListener('wheel', handleWheelScale)
-    }
-  }, [matrix])
 
   function setupUnitRef(data: TData) {
     const unitRef: IRef = {}
@@ -125,30 +117,6 @@ export default function Uml({ data, config }: IProps) {
     })
 
     return computedLinePos
-  }
-
-  function handleWheelScale(event: WheelEvent) {
-    if ((event.ctrlKey || event.altKey) && div && div.current) {
-      event.preventDefault()
-      // ref: https://github.com/aleofreddi/svgpan/blob/d59255197236e5936650e4cd9b1ec0b88f199188/svgpan.js#L146
-      const divEl = div.current
-      const { offsetLeft, offsetTop } = divEl
-      const { clientX, clientY } = event
-      // 1.2 and 360 control the sensitivity
-      const zoom = Math.pow(1.2, -event.deltaY / 360)
-      const ctm = new DOMMatrix(matrix)
-      let mouse = new DOMPoint(clientX - offsetLeft, clientY - offsetTop)
-      mouse = mouse.matrixTransform(ctm.inverse())
-      const trans = new DOMMatrix()
-        .translate(mouse.x, mouse.y)
-        .scale(zoom)
-        .translate(-mouse.x, -mouse.y)
-      setMatrix(dmatrix2Array(ctm.multiply(trans)))
-    }
-  }
-
-  function dmatrix2Array(dmatrix: DOMMatrix) {
-    return [dmatrix.a, dmatrix.b, dmatrix.c, dmatrix.d, dmatrix.e, dmatrix.f]
   }
 
   return (
