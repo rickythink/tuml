@@ -5,9 +5,7 @@ type UseSvgPanHook = [(node: HTMLElement | null) => void, Array<number>]
 export function useSvgPan(): UseSvgPanHook {
   const [node, setNode] = useState<HTMLElement | null>(null)
   const [matrix, setMatrix] = useState([1, 0, 0, 1, 0, 0])
-  const [mousedownTf, setMousedownTf] = useState<DOMMatrix>(
-    new DOMMatrix([1, 0, 0, 1, 0, 0])
-  )
+  const [mousedownTf, setMousedownTf] = useState<DOMMatrix>()
   const [mousedownOrigin, setMousedownOrigin] = useState()
   const [canMove, setCanMove] = useState(false)
 
@@ -62,13 +60,17 @@ export function useSvgPan(): UseSvgPanHook {
       let mouse = new DOMPoint(clientX - offsetLeft, clientY - offsetTop)
       mouse = mouse.matrixTransform(mousedownTf)
       console.log(mousedownOrigin)
-      setMatrix(
-        dmatrix2Array(
-          mousedownTf
-            .inverse()
-            .translate(mouse.x - mousedownOrigin.x, mouse.y - mousedownOrigin.y)
+      mousedownTf &&
+        setMatrix(
+          dmatrix2Array(
+            mousedownTf
+              .inverse()
+              .translate(
+                mouse.x - mousedownOrigin.x,
+                mouse.y - mousedownOrigin.y
+              )
+          )
         )
-      )
     }
   }
 
