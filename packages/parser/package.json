@@ -2,10 +2,18 @@
   "name": "@tuml/parser",
   "version": "0.0.1",
   "description": "",
-  "main": "index.js",
+  "main": "src/index.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest",
+    "test:watch": "jest --watch"
   },
   "author": "",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "ts-morph": "^5.0.0"
+  },
+  "devDependencies": {
+    "jest": "^24.9.0",
+    "ts-jest": "^24.2.0"
+  }
 }
