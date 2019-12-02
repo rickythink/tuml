@@ -1,0 +1,14 @@
+name: JEST CI
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+      - uses: sergioramos/yarn-actions/install@master
+      - name: Run lerna test
+        run: |
+          ./node_modules/lerna/cli.js run test
