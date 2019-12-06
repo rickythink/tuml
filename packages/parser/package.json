@@ -10,9 +10,11 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "ts-morph": "^5.0.0"
+    "ts-morph": "^5.0.0",
+    "typescript": "^3.7.3"
   },
   "devDependencies": {
+    "@types/node": "^12.12.14",
     "jest": "^24.9.0",
     "ts-jest": "^24.2.0"
   }
