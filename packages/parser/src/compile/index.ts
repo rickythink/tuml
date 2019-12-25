@@ -56,6 +56,7 @@ export function compile(content: string) {
   const node = program.getSourceFile(defaultFileName)
   const symbol = getSymbolByType(node)
   return {
-    symbol
+    symbol,
+    checker
   }
 }

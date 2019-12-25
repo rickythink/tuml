@@ -2,6 +2,7 @@ export interface IMap {
   block: {
     name: string
     export?: boolean
+    type?: string
   }
 }
 

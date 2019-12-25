@@ -10,7 +10,7 @@ export class Parser {
   }
 
   getLocals() {
-    const { symbol } = compile(this.content)
+    const { symbol, checker } = compile(this.content)
     const locals = (symbol.valueDeclaration as any).locals
     for (const local of locals) {
       const [name, symbolObj] = local
@@ -20,10 +20,13 @@ export class Parser {
         // set block export true
         isExport = true
       }
+      const typeNode = symbolObj.declarations[0]
+      const type = checker.typeToString(checker.getTypeAtLocation(typeNode))
       this.map.push({
         block: {
           name: name,
-          export: isExport
+          export: isExport,
+          type: type
         }
       })
     }
