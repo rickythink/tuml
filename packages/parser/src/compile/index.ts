@@ -53,10 +53,11 @@ export function compile(content: string) {
     return checker.getSymbolAtLocation(declaration as ts.SourceFile)
   }
 
-  const node = program.getSourceFile(defaultFileName)
-  const symbol = getSymbolByType(node)
+  const sourceFile = program.getSourceFile(defaultFileName)
+  const rootSymbol = getSymbolByType(sourceFile)
   return {
-    symbol,
+    sourceFile,
+    rootSymbol,
     checker
   }
 }

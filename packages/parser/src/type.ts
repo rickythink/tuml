@@ -3,6 +3,7 @@ export interface IMap {
     name: string
     export?: boolean
     type?: string
+    extend?: Array<string>
   }
 }
 

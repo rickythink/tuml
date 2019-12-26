@@ -37,7 +37,7 @@ export default Demo;`
 describe('Parser GetLocals Test', () => {
   test('runs without crashing', () => {
     expect(() => {
-      new Parser(Demo).getLocals()
+      new Parser(Demo).parse()
     }).not.toThrow()
   })
 })
