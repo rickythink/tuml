@@ -1,15 +1,15 @@
 import * as ts from 'typescript'
 import { compile } from './compile'
-import { AMap } from './type'
+import { IBlockArray } from './type'
 
 export class Parser {
   private content: string
   private rootSymbol: ts.Symbol
   private checker: ts.TypeChecker
-  private map: AMap
+  private map: IBlockArray
   constructor(content: string) {
     this.content = content
-    this.map = [] as AMap
+    this.map = [] as IBlockArray
   }
 
   getLocals() {
@@ -28,13 +28,11 @@ export class Parser {
       )
       const extend = this.getExtend(localSymbol)
       this.map.push({
-        block: {
-          name: name,
-          export: isExport,
-          // TODO: not right for class
-          paramDes: paramDes,
-          extend: extend
-        }
+        name: name,
+        export: isExport,
+        // TODO: not right for class
+        paramDes: paramDes,
+        extend: extend
       })
     }
     console.log(this.map)
