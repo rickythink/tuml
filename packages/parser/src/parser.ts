@@ -1,6 +1,6 @@
 import * as ts from 'typescript'
 import { compile } from './compile'
-import { IBlockArray } from './type'
+import { IBlock, IBlockArray } from './type'
 
 export class Parser {
   private content: string
@@ -12,32 +12,68 @@ export class Parser {
     this.map = [] as IBlockArray
   }
 
-  getLocals() {
-    const locals = (this.rootSymbol.valueDeclaration as any).locals
+  /**
+   * Get locals of a root symbol
+   */
+  getLocals(rootSymbol: ts.Symbol) {
+    const locals = (rootSymbol.valueDeclaration as any).locals
     for (const local of locals) {
-      const [name, localSymbol] = local
-      // set block name
-      let isExport = false
-      if (localSymbol.exportSymbol) {
-        // set block export true
-        isExport = true
-      }
-      const param = localSymbol.declarations[0]
-      const paramDes = this.checker.typeToString(
-        this.checker.getTypeAtLocation(param)
-      )
-      const extend = this.getExtend(localSymbol)
-      this.map.push({
-        name: name,
-        export: isExport,
-        // TODO: not right for class
-        paramDes: paramDes,
-        extend: extend
-      })
+      const [, symbol] = local
+      const block = this.serializeSymbol(symbol)
+      this.map.push(block)
     }
     console.log(this.map)
   }
 
+  /**
+   * Serialize symbol to the structure we want
+   * @param symbol
+   */
+  serializeSymbol(symbol) {
+    const name = symbol.getName()
+    let isExport = false
+    if (symbol.exportSymbol!) {
+      // set block export true
+      isExport = true
+    }
+    const param = symbol.declarations[0]
+    const paramDes = this.checker.typeToString(
+      this.checker.getTypeAtLocation(param)
+    )
+    const extend = this.getExtend(symbol)
+    const members = this.getMembers(symbol)
+    const block: IBlock = {
+      name: name,
+      export: isExport,
+      // TODO: not right for class
+      paramDes: paramDes,
+      extend: extend,
+      members: members
+    }
+    return block
+  }
+
+  /**
+   * Get members of the symbol
+   * @param symbol
+   */
+  getMembers(symbol: ts.Symbol) {
+    const members = []
+    if ('members' in symbol && symbol.members.size) {
+      const values = symbol.members.values()
+      for (let i = 0; i < symbol.members.size; i++) {
+        const result = values.next()
+        const member = this.serializeSymbol(result.value)
+        members.push(member)
+      }
+    }
+    return members
+  }
+
+  /**
+   * Get extends of the symbol
+   * @param symbol
+   */
   getExtend(symbol: ts.Symbol) {
     const extend: Array<string> = []
     if (
@@ -53,7 +89,6 @@ export class Parser {
               firstHeritageClauseType.expression
             )
             extend.push(extendsSymbol.getName())
-            console.log(extendsSymbol.getName())
           })
         }
       })
@@ -61,10 +96,13 @@ export class Parser {
     return extend
   }
 
+  /**
+   * Main parse entrypoint
+   */
   parse() {
     const { rootSymbol, checker } = compile(this.content)
     this.rootSymbol = rootSymbol
     this.checker = checker
-    this.getLocals()
+    this.getLocals(rootSymbol)
   }
 }

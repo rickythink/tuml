@@ -18,7 +18,11 @@ export interface IBlock {
   /**
    * From which class is inherited
    */
-  extend?: Array<string>
+  extend?: IBlock[] | string[]
+  /**
+   * Memebers
+   */
+  members?: IBlock[]
 }
 
 export type IBlockArray = Array<IBlock>
