@@ -22,16 +22,17 @@ export class Parser {
         // set block export true
         isExport = true
       }
-      const typeNode = localSymbol.declarations[0]
-      const type = this.checker.typeToString(
-        this.checker.getTypeAtLocation(typeNode)
+      const param = localSymbol.declarations[0]
+      const paramDes = this.checker.typeToString(
+        this.checker.getTypeAtLocation(param)
       )
       const extend = this.getExtend(localSymbol)
       this.map.push({
         block: {
           name: name,
           export: isExport,
-          type: type,
+          // TODO: not right for class
+          paramDes: paramDes,
           extend: extend
         }
       })
