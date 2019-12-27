@@ -39,7 +39,7 @@ interface IPos {
 
 type TLinePos = Array<IPos>
 
-export default function Uml({ data, config }: IProps) {
+export default function Uml({ data = [], config }: IProps) {
   const [linePos, setLinePos] = useState<TLinePos>()
   const [div, matrix] = useSvgPan()
   const unitRef = useRef(setupUnitRef(data))
@@ -58,7 +58,7 @@ export default function Uml({ data, config }: IProps) {
   useEffect(() => {
     const computedLinePos = computeLinePos(data)
     setLinePos([...computedLinePos])
-  }, [data])
+  }, data)
 
   function setupUnitRef(data: UmlData) {
     const unitRef: IRef = {}
