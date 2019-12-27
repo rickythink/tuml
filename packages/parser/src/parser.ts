@@ -1,15 +1,15 @@
 import * as ts from 'typescript'
 import { compile } from './compile'
-import { IBlock, IBlockArray } from './type'
+import { IParserBlock, IParserBlockArray } from '@tuml/types'
 
 export class Parser {
   private content: string
   private rootSymbol: ts.Symbol
   private checker: ts.TypeChecker
-  private map: IBlockArray
+  private map: IParserBlockArray
   constructor(content: string) {
     this.content = content
-    this.map = [] as IBlockArray
+    this.map = [] as IParserBlockArray
   }
 
   /**
@@ -43,7 +43,7 @@ export class Parser {
     )
     const extend = this.getExtend(symbol)
     const members = this.getMembers(symbol)
-    const block: IBlock = {
+    const block: IParserBlock = {
       name: name,
       export: isExport,
       type: type,

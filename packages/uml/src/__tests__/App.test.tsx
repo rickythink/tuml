@@ -1,10 +1,10 @@
 import React from 'react'
 import { render } from '@testing-library/react'
 
-import { TData } from '../interfaces/data'
+import { UmlData } from '@tuml/types'
 import Uml from '../index'
 
-const data: TData = [
+const data: UmlData = [
   {
     name: '1',
     values: { a: 'a', b: 'b', c: 'c', d: 'd' },

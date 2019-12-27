@@ -1,12 +1,7 @@
 {
-  "include": [
-    "src/index.tsx"
-  ],
+  "include": ["src/index.tsx"],
   "compilerOptions": {
-    "lib": [
-      "dom",
-      "es2015"
-    ],
+    "lib": ["dom", "es2015"],
     "jsx": "react",
     "target": "es5",
     "allowJs": true,

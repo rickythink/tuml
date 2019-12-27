@@ -1,15 +1,14 @@
 import React, { useRef, useEffect, useState, createRef } from 'react'
 import { useSvgPan } from './hooks/useSvgPan'
 
-import { IUserConfig } from './interfaces/config'
-import { TData } from './interfaces/data'
+import { IUmlUserConfig, UmlData } from '@tuml/types'
 import { StyleConfig } from './config'
 
 import ArrowMaker from './components/ArrowMaker'
 
 interface IProps {
-  data: TData
-  config?: IUserConfig
+  data: UmlData
+  config?: IUmlUserConfig
 }
 
 type TRef = React.RefObject<SVGRectElement>
@@ -61,7 +60,7 @@ export default function Uml({ data, config }: IProps) {
     setLinePos([...computedLinePos])
   }, [data])
 
-  function setupUnitRef(data: TData) {
+  function setupUnitRef(data: UmlData) {
     const unitRef: IRef = {}
     data.forEach(d => {
       unitRef[d.name] = {}
@@ -72,7 +71,7 @@ export default function Uml({ data, config }: IProps) {
     return unitRef
   }
 
-  function computeLinePos(data: TData): TLinePos {
+  function computeLinePos(data: UmlData): TLinePos {
     const computedLinePos: TLinePos = []
     data.forEach(d => {
       if (d.deps) {

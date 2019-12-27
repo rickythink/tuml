@@ -1,13 +1,13 @@
-import { IUserConfig, IDefaultConfig } from '../interfaces/config'
+import { IUmlUserConfig, IUmlDefaultConfig } from '@tuml/types'
 
 function isObject(item: object): boolean {
   return item && typeof item === 'object' && !Array.isArray(item)
 }
 
-export function deepMerge<T extends IDefaultConfig, U extends IUserConfig>(
-  target: T,
-  ...sources: U[]
-): T {
+export function deepMerge<
+  T extends IUmlDefaultConfig,
+  U extends IUmlUserConfig
+>(target: T, ...sources: U[]): T {
   if (!sources.length) return target
   const source = sources.shift()
 

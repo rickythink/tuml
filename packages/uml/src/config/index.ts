@@ -1,8 +1,8 @@
-import { IUserConfig, IDefaultConfig } from '../interfaces/config'
+import { IUmlUserConfig, IUmlDefaultConfig } from '@tuml/types'
 import { deepMerge } from '../utils/'
 
 class StyleConfig {
-  config: IDefaultConfig = {
+  config: IUmlDefaultConfig = {
     lineStyle: {
       color: '#333',
       arrowSize: 5
@@ -30,13 +30,13 @@ class StyleConfig {
     }
   }
 
-  constructor(userConfig?: IUserConfig) {
+  constructor(userConfig?: IUmlUserConfig) {
     if (userConfig) {
       this.config = deepMerge(this.config, userConfig)
     }
   }
 
-  getConfig(): IDefaultConfig {
+  getConfig(): IUmlDefaultConfig {
     return this.config
   }
 }

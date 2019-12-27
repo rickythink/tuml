@@ -1,4 +1,4 @@
-import { compile } from '../compile/index'
+import { compile } from '../compile'
 
 const Demo = `
 function extra1(){
