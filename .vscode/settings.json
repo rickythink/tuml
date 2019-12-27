@@ -3,19 +3,16 @@
     { "directory": "./", "changeProcessCWD": true }
   ],
   "editor.formatOnSave": true,
-  "eslint.autoFixOnSave": true,
   "eslint.validate": [
+    "html",
     "javascript",
+    "typescript",
     "javascriptreact",
-    {
-      "language": "typescript",
-      "autoFix": true
-    },
-    {
-      "language": "typescriptreact",
-      "autoFix": true
-    }
+    "typescriptreact"
   ],
   "editor.tabSize": 2,
   "typescript.tsdk": "node_modules/typescript/lib",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  }
 }
