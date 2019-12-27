@@ -1,3 +1,3 @@
-export { IUmlUserConfig, IUmlDefaultConfig } from './uml/config'
-export { UmlData } from './uml/data'
-export { IParserBlock, IParserBlockArray } from './parser/block'
+export * from './uml/config'
+export * from './uml/data'
+export * from './parser/block'
