@@ -31,6 +31,7 @@ export class Parser {
    */
   serializeSymbol(symbol) {
     const name = symbol.getName()
+    const type = this.getType(symbol)
     let isExport = false
     if (symbol.exportSymbol!) {
       // set block export true
@@ -45,12 +46,26 @@ export class Parser {
     const block: IBlock = {
       name: name,
       export: isExport,
+      type: type,
       // TODO: not right for class
       paramDes: paramDes,
       extend: extend,
       members: members
     }
     return block
+  }
+
+  /**
+   * Get the type of the block
+   * @param symbol
+   */
+  getType(symbol: ts.Symbol) {
+    let type = 'unknown'
+    const flag = symbol.getFlags()
+    if (flag in ts.SymbolFlags) {
+      type = ts.SymbolFlags[flag]
+    }
+    return type
   }
 
   /**

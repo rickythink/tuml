@@ -1,6 +1,9 @@
 import { Parser } from '../src/index'
 
 const Demo = `
+interface ITest{
+  [name:string]?: number
+}
 export function extra1(){
   console.log('extra')
 }
