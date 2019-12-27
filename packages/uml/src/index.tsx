@@ -1,13 +1,13 @@
 import React, { useRef, useEffect, useState, createRef } from 'react'
 import { useSvgPan } from './hooks/useSvgPan'
 
-import { IUmlUserConfig, UmlData } from '@tuml/types'
+import { IUmlUserConfig, UmlDataArray } from '@tuml/types'
 import { StyleConfig } from './config'
 
 import ArrowMaker from './components/ArrowMaker'
 
 interface IProps {
-  data: UmlData
+  data?: UmlDataArray
   config?: IUmlUserConfig
 }
 
@@ -60,25 +60,26 @@ export default function Uml({ data = [], config }: IProps) {
     setLinePos([...computedLinePos])
   }, data)
 
-  function setupUnitRef(data: UmlData) {
+  function setupUnitRef(data: UmlDataArray) {
     const unitRef: IRef = {}
     data.forEach(d => {
       unitRef[d.name] = {}
-      for (const key in d.values) {
-        unitRef[d.name][key] = createRef()
+      // TODO: what if d.members is empty?
+      for (const id of d.members || []) {
+        unitRef[d.name][id.name] = createRef()
       }
     })
     return unitRef
   }
 
-  function computeLinePos(data: UmlData): TLinePos {
+  function computeLinePos(data: UmlDataArray): TLinePos {
     const computedLinePos: TLinePos = []
     data.forEach(d => {
       if (d.deps) {
         for (const k in d.deps) {
           d.deps[k].forEach(dep => {
             const self = unitRef.current[d.name][k].current
-            const target = unitRef.current[dep.name][dep.key].current
+            const target = unitRef.current[dep.name][dep.id].current
             if (
               self &&
               target &&
@@ -127,28 +128,33 @@ export default function Uml({ data = [], config }: IProps) {
           transform={`matrix(${matrix[0]},${matrix[1]},${matrix[2]},${matrix[3]},${matrix[4]},${matrix[5]})`}
         >
           {data.map((d, dIdx) => {
-            return Object.keys(d.values).map((k, kIdx) => {
-              return (
-                <g key={`${d.name}-${k}`}>
-                  <rect
-                    ref={unitRef.current[d.name][k]}
-                    x={dIdx * hGap}
-                    y={0 + kIdx * (height + borderWidth)}
-                    width={width}
-                    height={height}
-                    fill={backgroundColor}
-                  />
-                  <text>
-                    <tspan
-                      x={dIdx * hGap + padding}
-                      y={0 + kIdx * (height + borderWidth) + (height - padding)}
-                    >
-                      {k}
-                    </tspan>
-                  </text>
-                </g>
-              )
-            })
+            return (
+              d.members &&
+              d.members.map((k, kIdx) => {
+                return (
+                  <g key={`${d.name}-${k.name}`}>
+                    <rect
+                      ref={unitRef.current[d.name][k.name]}
+                      x={dIdx * hGap}
+                      y={0 + kIdx * (height + borderWidth)}
+                      width={width}
+                      height={height}
+                      fill={backgroundColor}
+                    />
+                    <text>
+                      <tspan
+                        x={dIdx * hGap + padding}
+                        y={
+                          0 + kIdx * (height + borderWidth) + (height - padding)
+                        }
+                      >
+                        {k.name}
+                      </tspan>
+                    </text>
+                  </g>
+                )
+              })
+            )
           })}
           {linePos &&
             linePos.map((l, idx) => {

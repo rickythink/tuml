@@ -43,7 +43,9 @@ export class Parser {
     )
     const extend = this.getExtend(symbol)
     const members = this.getMembers(symbol)
+    const id = this.genID(name, type, paramDes)
     const block: IParserBlock = {
+      id: id,
       name: name,
       export: isExport,
       type: type,
@@ -111,6 +113,10 @@ export class Parser {
     return extend
   }
 
+  genID(name: string, type: string = '', paramDes: string = '') {
+    return `${name}-${type}-${paramDes}`
+  }
+
   /**
    * Main parse entrypoint
    */
@@ -119,5 +125,6 @@ export class Parser {
     this.rootSymbol = rootSymbol
     this.checker = checker
     this.getLocals(rootSymbol)
+    return this.map
   }
 }

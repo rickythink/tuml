@@ -1,5 +1,9 @@
 export interface IParserBlock {
   /**
+   * Define the id of the block
+   */
+  id: string
+  /**
    * Block name
    */
   name: string
@@ -18,7 +22,7 @@ export interface IParserBlock {
   /**
    * From which class is inherited
    */
-  extend?: IParserBlock[] | string[]
+  extend?: string[]
   /**
    * Memebers
    */

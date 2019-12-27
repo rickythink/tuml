@@ -1,9 +1,9 @@
 import React from 'react'
-import { IUserConfig } from '../interfaces/config'
+import { IUmlUserConfig } from '@tuml/types'
 import { StyleConfig } from '../config'
 
 interface IArrowMaker {
-  config?: IUserConfig
+  config?: IUmlUserConfig
 }
 
 export default function ArrowMaker({ config = {} }: IArrowMaker) {

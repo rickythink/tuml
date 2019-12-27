@@ -1,16 +1,16 @@
+import { IParserBlock } from '../parser/block'
+
 interface IDeps {
-  key: string
+  id: string
   name: string
 }
 
-interface IBlockData {
-  name: string
-  values: {
-    [propName: string]: string
-  }
+type IParserBlockNoMembers = Omit<IParserBlock, 'members'>
+export interface IUmlBlock extends IParserBlock {
+  members?: Array<IParserBlock | IParserBlockNoMembers>
   deps?: {
     [propName: string]: Array<IDeps>
   }
 }
 
-export type UmlData = IBlockData[]
+export type UmlDataArray = IUmlBlock[]

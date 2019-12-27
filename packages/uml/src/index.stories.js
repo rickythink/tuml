@@ -4,33 +4,58 @@ import Uml from './index'
 const data = [
   {
     name: '1',
-    values: { a: 'a', b: 'b', c: 'c', d: 'd' },
+    members: [
+      { name: '1', tag: 'header' },
+      { name: 'a' },
+      { name: 'b' },
+      { name: 'c' },
+      { name: 'd' }
+    ],
     deps: {
+      1: [
+        {
+          name: '3',
+          id: '3'
+        }
+      ],
       a: [
         {
           name: '2',
-          key: 'e'
+          id: 'e'
         },
         {
           name: '2',
-          key: 'h'
+          id: 'h'
         }
       ],
       b: [
         {
           name: '2',
-          key: 'h'
+          id: 'h'
         }
       ],
       d: [
         {
           name: '2',
-          key: 'e'
+          id: 'e'
         }
       ]
     }
   },
-  { name: '2', values: { e: 'e', f: 'f', g: 'g', h: 'h' } }
+  {
+    name: '2',
+    members: [
+      { name: '2', tag: 'header' },
+      { name: 'e' },
+      { name: 'f' },
+      { name: 'g' },
+      { name: 'h' }
+    ]
+  },
+  {
+    name: '3',
+    members: [{ name: '3', tag: 'header' }]
+  }
 ]
 
 export default { title: 'UML' }
