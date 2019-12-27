@@ -47,7 +47,7 @@ export class Parser {
       name: name,
       export: isExport,
       type: type,
-      // TODO: not right for class
+      // TODO: not right for class(should be the type of the constructor)
       paramDes: paramDes,
       extend: extend,
       members: members
