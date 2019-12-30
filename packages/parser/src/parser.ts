@@ -3,12 +3,10 @@ import { compile } from './compile'
 import { IParserBlock, IParserBlockArray } from '@tuml/types'
 
 export class Parser {
-  private content: string
-  private rootSymbol: ts.Symbol
-  private checker: ts.TypeChecker
+  private checker: ts.TypeChecker | undefined
   private map: IParserBlockArray
-  constructor(content: string) {
-    this.content = content
+  constructor() {
+    this.checker = undefined
     this.map = [] as IParserBlockArray
   }
 
@@ -29,7 +27,7 @@ export class Parser {
    * Serialize symbol to the structure we want
    * @param symbol
    */
-  serializeSymbol(symbol) {
+  serializeSymbol(symbol: any) {
     const name = symbol.getName()
     const type = this.getType(symbol)
     let isExport = false
@@ -38,9 +36,9 @@ export class Parser {
       isExport = true
     }
     const param = symbol.declarations[0]
-    const paramDes = this.checker.typeToString(
-      this.checker.getTypeAtLocation(param)
-    )
+    const paramDes =
+      this.checker &&
+      this.checker.typeToString(this.checker.getTypeAtLocation(param))
     const extend = this.getExtend(symbol)
     const members = this.getMembers(symbol)
     const id = this.genID(name, type, paramDes)
@@ -76,7 +74,7 @@ export class Parser {
    */
   getMembers(symbol: ts.Symbol) {
     const members = []
-    if ('members' in symbol && symbol.members.size) {
+    if (symbol && symbol.members && symbol.members.size) {
       const values = symbol.members.values()
       for (let i = 0; i < symbol.members.size; i++) {
         const result = values.next()
@@ -100,12 +98,14 @@ export class Parser {
       symbol.declarations.forEach((declaration: any, index) => {
         if (declaration.heritageClauses) {
           const firstHeritageClause = declaration.heritageClauses[0]
-          firstHeritageClause.types.forEach((type, index) => {
+          firstHeritageClause.types.forEach((type: any, index: any) => {
             const firstHeritageClauseType = firstHeritageClause.types![index]
-            const extendsSymbol = this.checker.getSymbolAtLocation(
-              firstHeritageClauseType.expression
-            )
-            extend.push(extendsSymbol.getName())
+            const extendsSymbol =
+              this.checker &&
+              this.checker.getSymbolAtLocation(
+                firstHeritageClauseType.expression
+              )
+            extendsSymbol && extend.push(extendsSymbol.getName())
           })
         }
       })
@@ -120,11 +120,11 @@ export class Parser {
   /**
    * Main parse entrypoint
    */
-  parse() {
-    const { rootSymbol, checker } = compile(this.content)
-    this.rootSymbol = rootSymbol
+  parse(content: string) {
+    const { rootSymbol, checker } = compile(content)
     this.checker = checker
-    this.getLocals(rootSymbol)
+    if (content && !rootSymbol) throw Error('Error in generating root symbol')
+    rootSymbol && this.getLocals(rootSymbol)
     return this.map
   }
 }

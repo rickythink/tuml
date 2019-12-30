@@ -1,9 +1,14 @@
 {
+  "include": ["src"],
   "compilerOptions": {
     "target": "es6",
     "module": "commonjs",
-    "lib": ["es2015", "dom"],
+    "jsx": "react",
     "sourceMap": true,
-    "noImplicitAny": false
-  }
+    "declaration": true,
+    "outDir": "./dist",
+    "esModuleInterop": true,
+    "strict": true
+  },
+  "exclude": ["node_modules", "**/__tests__/*"]
 }

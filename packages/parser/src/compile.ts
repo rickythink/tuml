@@ -21,7 +21,7 @@ export function compile(content: string) {
     writeFile: () => {},
     getDefaultLibFileName: () => 'lib.d.ts',
     useCaseSensitiveFileNames: () => false,
-    getCanonicalFileName: fileName => fileName,
+    getCanonicalFileName: (fileName: string) => fileName,
     getCurrentDirectory: () => '',
     getNewLine: () => '\n',
     fileExists: () => true,
