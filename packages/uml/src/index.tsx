@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState, createRef } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSvgPan } from './hooks/useSvgPan'
 
 import { IUmlUserConfig, UmlDataArray } from '@tuml/types'
@@ -9,12 +9,13 @@ import ArrowMaker from './components/ArrowMaker'
 interface IProps {
   data?: UmlDataArray
   config?: IUmlUserConfig
+  onChange?: (data: UmlDataArray) => void
 }
 
 type TRef = React.RefObject<SVGRectElement>
 interface IRef {
   [property: string]: {
-    [property: string]: TRef
+    [property: string]: SVGRectElement | undefined
   }
 }
 
@@ -42,7 +43,10 @@ type TLinePos = Array<IPos>
 export default function Uml({ data = [], config }: IProps) {
   const [linePos, setLinePos] = useState<TLinePos>()
   const [div, matrix] = useSvgPan()
-  const unitRef = useRef(setupUnitRef(data))
+  const blockRefs = setupBlockStructure(data)
+  const setBlockRef = (node: SVGRectElement, i: string, j: string) => {
+    blockRefs[i][j] = node
+  }
   const {
     lineStyle: { color },
     blockStyle: {
@@ -54,23 +58,23 @@ export default function Uml({ data = [], config }: IProps) {
     }
   } = new StyleConfig(config).getConfig()
 
+  function setupBlockStructure(data: UmlDataArray) {
+    const blockRefs: IRef = {}
+    data.forEach(d => {
+      blockRefs[d.name] = {}
+      // TODO: what if d.members is empty?
+      for (const id of d.members || []) {
+        blockRefs[d.name][id.id] = undefined
+      }
+    })
+    return blockRefs
+  }
   // excute once mounted
+  const dataIds = data.map(d => d.id).join(',')
   useEffect(() => {
     const computedLinePos = computeLinePos(data)
     setLinePos([...computedLinePos])
-  }, data)
-
-  function setupUnitRef(data: UmlDataArray) {
-    const unitRef: IRef = {}
-    data.forEach(d => {
-      unitRef[d.name] = {}
-      // TODO: what if d.members is empty?
-      for (const id of d.members || []) {
-        unitRef[d.name][id.name] = createRef()
-      }
-    })
-    return unitRef
-  }
+  }, [dataIds])
 
   function computeLinePos(data: UmlDataArray): TLinePos {
     const computedLinePos: TLinePos = []
@@ -78,8 +82,8 @@ export default function Uml({ data = [], config }: IProps) {
       if (d.deps) {
         for (const k in d.deps) {
           d.deps[k].forEach(dep => {
-            const self = unitRef.current[d.name][k].current
-            const target = unitRef.current[dep.name][dep.id].current
+            const self = blockRefs[d.name][k]
+            const target = blockRefs[dep.name][dep.id]
             if (
               self &&
               target &&
@@ -134,7 +138,7 @@ export default function Uml({ data = [], config }: IProps) {
                 return (
                   <g key={`${d.name}-${k.name}`}>
                     <rect
-                      ref={unitRef.current[d.name][k.name]}
+                      ref={node => node && setBlockRef(node, d.name, k.id)}
                       x={dIdx * hGap}
                       y={0 + kIdx * (height + borderWidth)}
                       width={width}
