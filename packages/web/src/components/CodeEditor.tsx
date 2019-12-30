@@ -4,11 +4,11 @@ import MonacoEditor from 'react-monaco-editor'
 export interface CodeEditorProps {
   onChange?: (text: string) => void
   onClick?: (range: [number, number]) => void
-  text: string
+  text?: string
   highlight?: { start: number; end: number } | undefined
 }
 
-export default class CodeEditor extends React.Component {
+export default class CodeEditor extends React.Component<CodeEditorProps> {
   constructor(props: CodeEditorProps) {
     super(props)
     this.state = {
@@ -21,6 +21,7 @@ export default class CodeEditor extends React.Component {
       <MonacoEditor
         language="typescript"
         theme="vs-dark"
+        onChange={text => this.props.onChange && this.props.onChange(text)}
         options={{
           automaticLayout: true,
           minimap: { enabled: false },
