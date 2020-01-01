@@ -124,8 +124,8 @@ export default function Uml({ data = [], config }: IProps) {
   }
 
   return (
-    <div ref={div} style={{ width: '100%' }}>
-      <svg width="100%">
+    <div ref={div} style={{ width: '100%', height: '100%' }}>
+      <svg width="100%" height="100%">
         <ArrowMaker config={config} />
 
         <g
