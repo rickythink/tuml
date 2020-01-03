@@ -41,8 +41,9 @@ interface IPos {
 type TLinePos = Array<IPos>
 
 export default function Uml({ data = [], config }: IProps) {
+  const dataIds = data.map(d => d.id).join(',')
   const [linePos, setLinePos] = useState<TLinePos>()
-  const [div, matrix] = useSvgPan()
+  const [[div, g], matrix] = useSvgPan(dataIds)
   const blockRefs = setupBlockStructure(data)
   const setBlockRef = (node: SVGRectElement, i: string, j: string) => {
     blockRefs[i][j] = node
@@ -70,7 +71,6 @@ export default function Uml({ data = [], config }: IProps) {
     return blockRefs
   }
   // excute once mounted
-  const dataIds = data.map(d => d.id).join(',')
   useEffect(() => {
     const computedLinePos = computeLinePos(data)
     setLinePos([...computedLinePos])
@@ -129,6 +129,7 @@ export default function Uml({ data = [], config }: IProps) {
         <ArrowMaker config={config} />
 
         <g
+          ref={g}
           transform={`matrix(${matrix[0]},${matrix[1]},${matrix[2]},${matrix[3]},${matrix[4]},${matrix[5]})`}
         >
           {data.map((d, dIdx) => {

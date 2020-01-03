@@ -1,10 +1,19 @@
 import { useState, useEffect, useCallback } from 'react'
+import { useSvgView } from '../useSvgView'
+type Tuple<TItem, TLength extends number> = [TItem, ...TItem[]] & {
+  length: TLength
+}
 
-type UseSvgPanHook = [(node: HTMLElement | null) => void, Array<number>]
+type UseSvgPanHook = [
+  [(node: HTMLElement | null) => void, (g: SVGGraphicsElement | null) => void],
+  Array<number>
+]
 
-export function useSvgPan(): UseSvgPanHook {
+export type Matrix = Tuple<number, 6>
+
+export function useSvgPan(dataIds: string): UseSvgPanHook {
   const [node, setNode] = useState<HTMLElement | null>(null)
-  const [matrix, setMatrix] = useState([1, 0, 0, 1, 0, 0])
+  const [matrix, setMatrix] = useState<Matrix>([1, 0, 0, 1, 0, 0])
   const [mousedownTf, setMousedownTf] = useState<DOMMatrix>()
   const [mousedownOrigin, setMousedownOrigin] = useState()
   const [canMove, setCanMove] = useState(false)
@@ -12,6 +21,8 @@ export function useSvgPan(): UseSvgPanHook {
   const ref = useCallback(node => {
     setNode(node)
   }, [])
+
+  const [refG] = useSvgView({ div: node, dataIds, matrix, setMatrix })
 
   useEffect(() => {
     node && node.addEventListener('wheel', handleWheelScale)
@@ -59,7 +70,6 @@ export function useSvgPan(): UseSvgPanHook {
       const { clientX, clientY } = event
       let mouse = new DOMPoint(clientX - offsetLeft, clientY - offsetTop)
       mouse = mouse.matrixTransform(mousedownTf)
-      console.log(mousedownOrigin)
       mousedownTf &&
         setMatrix(
           dmatrix2Array(
@@ -97,9 +107,9 @@ export function useSvgPan(): UseSvgPanHook {
     }
   }
 
-  function dmatrix2Array(dmatrix: DOMMatrix) {
-    return [dmatrix.a, dmatrix.b, dmatrix.c, dmatrix.d, dmatrix.e, dmatrix.f]
-  }
+  return [[ref, refG], matrix]
+}
 
-  return [ref, matrix]
+export function dmatrix2Array(dmatrix: DOMMatrix): Matrix {
+  return [dmatrix.a, dmatrix.b, dmatrix.c, dmatrix.d, dmatrix.e, dmatrix.f]
 }
