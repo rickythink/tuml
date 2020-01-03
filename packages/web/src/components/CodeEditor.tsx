@@ -11,9 +11,7 @@ export interface CodeEditorProps {
 export default class CodeEditor extends React.Component<CodeEditorProps> {
   constructor(props: CodeEditorProps) {
     super(props)
-    this.state = {
-      code: '// type your code...'
-    }
+    this.state = {}
   }
 
   render() {
@@ -21,6 +19,7 @@ export default class CodeEditor extends React.Component<CodeEditorProps> {
       <MonacoEditor
         language="typescript"
         theme="vs-dark"
+        value={this.props.text}
         onChange={text => this.props.onChange && this.props.onChange(text)}
         options={{
           automaticLayout: true,
