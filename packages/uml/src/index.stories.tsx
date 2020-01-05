@@ -3,13 +3,14 @@ import Uml from './index'
 
 const data = [
   {
+    id: '1',
     name: '1',
     members: [
-      { name: '1', tag: 'header' },
-      { name: 'a' },
-      { name: 'b' },
-      { name: 'c' },
-      { name: 'd' }
+      { name: '1', id: '1' },
+      { name: 'a', id: 'a' },
+      { name: 'b', id: 'b' },
+      { name: 'c', id: 'c' },
+      { name: 'd', id: 'd' }
     ],
     deps: {
       1: [
@@ -43,18 +44,20 @@ const data = [
     }
   },
   {
+    id: '2',
     name: '2',
     members: [
-      { name: '2', tag: 'header' },
-      { name: 'e' },
-      { name: 'f' },
-      { name: 'g' },
-      { name: 'h' }
+      { name: '2', id: '2' },
+      { name: 'e', id: 'e' },
+      { name: 'f', id: 'f' },
+      { name: 'g', id: 'g' },
+      { name: 'h', id: 'h' }
     ]
   },
   {
+    id: '3',
     name: '3',
-    members: [{ name: '3', tag: 'header' }]
+    members: [{ name: '3', id: '3' }]
   }
 ]
 

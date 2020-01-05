@@ -12,7 +12,6 @@ interface IProps {
   onChange?: (data: UmlDataArray) => void
 }
 
-type TRef = React.RefObject<SVGRectElement>
 interface IRef {
   [property: string]: {
     [property: string]: SVGRectElement | undefined
