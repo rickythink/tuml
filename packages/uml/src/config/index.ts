@@ -24,9 +24,9 @@ class StyleConfig {
         width: 4,
         color: 'lightblue'
       },
-      width: 200,
+      width: 400,
       height: 30,
-      hGap: 300
+      hGap: 600
     }
   }
 

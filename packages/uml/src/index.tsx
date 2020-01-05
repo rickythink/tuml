@@ -152,7 +152,18 @@ export default function Uml({ data = [], config }: IProps) {
                           0 + kIdx * (height + borderWidth) + (height - padding)
                         }
                       >
+                        {/* block name */}
                         {k.name}
+                      </tspan>
+                      <tspan
+                        textAnchor="end"
+                        x={dIdx * hGap + width - padding}
+                        y={
+                          0 + kIdx * (height + borderWidth) + (height - padding)
+                        }
+                      >
+                        {/* block paramDes */}
+                        {k.paramDes}
                       </tspan>
                     </text>
                   </g>

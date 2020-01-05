@@ -3,61 +3,105 @@ import Uml from './index'
 
 const data = [
   {
-    id: '1',
-    name: '1',
+    id: 'Demo-Class-Demo',
+    name: 'Demo',
+    type: 'Class',
+    paramDes: 'Demo',
+    extend: ['DemoBase'],
     members: [
-      { name: '1', id: '1' },
-      { name: 'a', id: 'a' },
-      { name: 'b', id: 'b' },
-      { name: 'c', id: 'c' },
-      { name: 'd', id: 'd' }
+      {
+        id: 'Demo-Class-Demo',
+        name: 'Demo',
+        export: false,
+        type: 'Class',
+        paramDes: 'Demo',
+        extend: ['DemoBase']
+      },
+      {
+        id: 'secret-Property-string | number',
+        name: 'secret',
+        export: false,
+        type: 'Property',
+        paramDes: 'string | number',
+        extend: [],
+        members: []
+      },
+      {
+        id: 'base-Property-DemoBase',
+        name: 'base',
+        export: false,
+        type: 'Property',
+        paramDes: 'DemoBase',
+        extend: [],
+        members: []
+      },
+      {
+        id: '__constructor-Constructor-any',
+        name: '__constructor',
+        export: false,
+        type: 'Constructor',
+        paramDes: 'any',
+        extend: [],
+        members: []
+      },
+      {
+        id: 'print-Method-() => void',
+        name: 'print',
+        export: false,
+        type: 'Method',
+        paramDes: '() => void',
+        extend: [],
+        members: []
+      },
+      {
+        id: 'greet-Method-(name: string) => void',
+        name: 'greet',
+        export: false,
+        type: 'Method',
+        paramDes: '(name: string) => void',
+        extend: [],
+        members: []
+      }
     ],
     deps: {
-      1: [
-        {
-          name: '3',
-          id: '3'
-        }
-      ],
-      a: [
-        {
-          name: '2',
-          id: 'e'
-        },
-        {
-          name: '2',
-          id: 'h'
-        }
-      ],
-      b: [
-        {
-          name: '2',
-          id: 'h'
-        }
-      ],
-      d: [
-        {
-          name: '2',
-          id: 'e'
-        }
-      ]
+      'Demo-Class-Demo': [{ name: 'DemoBase', id: 'DemoBase-Class-DemoBase' }]
     }
   },
   {
-    id: '2',
-    name: '2',
+    id: 'DemoBase-Class-DemoBase',
+    name: 'DemoBase',
+    export: false,
+    type: 'Class',
+    paramDes: 'DemoBase',
+    extend: [],
     members: [
-      { name: '2', id: '2' },
-      { name: 'e', id: 'e' },
-      { name: 'f', id: 'f' },
-      { name: 'g', id: 'g' },
-      { name: 'h', id: 'h' }
+      {
+        id: 'DemoBase-Class-DemoBase',
+        name: 'DemoBase',
+        export: false,
+        type: 'Class',
+        paramDes: 'DemoBase',
+        extend: []
+      },
+      {
+        id: 'base-Property-string',
+        name: 'base',
+        export: false,
+        type: 'Property',
+        paramDes: 'string',
+        extend: [],
+        members: []
+      },
+      {
+        id: '__constructor-Constructor-any',
+        name: '__constructor',
+        export: false,
+        type: 'Constructor',
+        paramDes: 'any',
+        extend: [],
+        members: []
+      }
     ]
-  },
-  {
-    id: '3',
-    name: '3',
-    members: [{ name: '3', id: '3' }]
   }
 ]
 
