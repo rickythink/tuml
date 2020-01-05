@@ -24,11 +24,12 @@ export function useSvgView(props: IPropsSvgView) {
   useEffect(() => {
     if (g && div) {
       const viewBox = getViewBox(g)
-      setViewCenter(div, g, viewBox)
+      viewBox && setViewCenter(div, g, viewBox)
     }
   }, [g, div, dataIds])
 
   function getViewBox(g: SVGGraphicsElement) {
+    if (!g.getBBox) return
     const bBox = g.getBBox()
 
     return {
