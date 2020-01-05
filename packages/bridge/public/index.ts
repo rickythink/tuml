@@ -11,12 +11,6 @@ export function extra1(){
 function extra2(name1:string,name2:string){
   console.log(name1,name2)
 }
-class DemoBase {
-  private base:string;
-  constructor (name:string) {
-    this.base = name
-  }
-}
 class Demo extends DemoBase{
   static active: boolean = false;
   private secret: string|number;
@@ -35,11 +29,16 @@ class Demo extends DemoBase{
     console.log(name)
   }
 }
-
+class DemoBase {
+  private base:string;
+  constructor (name:string) {
+    this.base = name
+  }
+}
 export default Demo;`
 
 document.getElementById('root').innerHTML = `<pre><code>${Demo}</code></pre>`
 
-const parserRet = new Parser(Demo).parse()
+const parserRet = new Parser().parse(Demo)
 const umlData = convert(parserRet)
 console.log(umlData)

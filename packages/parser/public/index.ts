@@ -39,4 +39,4 @@ export default Demo;`
 
 document.getElementById('root').innerHTML = `<pre><code>${Demo}</code></pre>`
 
-new Parser(Demo).parse()
+new Parser().parse(Demo)

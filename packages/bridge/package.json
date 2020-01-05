@@ -5,8 +5,7 @@
   "main": "src/index.ts",
   "scripts": {
     "dev": "parcel public/index.html --open",
-    "test": "jest",
-    "test:watch": "jest --watch"
+    "test": "jest --passWithNoTests"
   },
   "author": "",
   "license": "MIT",

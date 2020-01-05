@@ -8,7 +8,7 @@
     "start": "parcel public/index.html --open",
     "build:web": "parcel build public/index.html",
     "deploy:prod": "netlify deploy --prod --dir dist",
-    "test": "jest",
+    "test": "jest --passWithNoTests",
     "test:watch": "jest --watch",
     "eject": "react-scripts eject"
   },
