@@ -1,5 +1,6 @@
 {
   "include": ["src"],
+  "files": ["custom.d.ts"],
   "compilerOptions": {
     "jsx": "react",
     "target": "es5",
