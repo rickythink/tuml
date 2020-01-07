@@ -32,7 +32,8 @@ class StyleConfig {
       },
       width: 400,
       height: 40,
-      hGap: 100
+      hGap: 100,
+      backgroundColor: '#f4f4f4'
     }
   }
 

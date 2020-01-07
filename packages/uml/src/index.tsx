@@ -5,8 +5,7 @@ import { IUmlUserConfig, UmlDataArray } from '@tuml/types'
 import { StyleConfig } from './config'
 
 import ArrowMaker from './components/ArrowMaker'
-
-import SvgIconProperty from './assets/icon/property.svg'
+import Icon from './components/Icon'
 
 interface IProps {
   data?: UmlDataArray
@@ -68,7 +67,8 @@ export default function Uml({ data = [], config }: IProps) {
         fontSize: contentFontSize
       },
       border: { width: borderWidth },
-      icon: { size: iconSize }
+      icon: { size: iconSize },
+      backgroundColor
     }
   } = new StyleConfig(config).getConfig()
 
@@ -137,7 +137,7 @@ export default function Uml({ data = [], config }: IProps) {
   }
 
   return (
-    <div ref={div} style={{ width: '100%', height: '100%' }}>
+    <div ref={div} style={{ width: '100%', height: '100%', backgroundColor }}>
       <svg width="100%" height="100%">
         <ArrowMaker config={config} />
 
@@ -154,7 +154,7 @@ export default function Uml({ data = [], config }: IProps) {
                     const yDelta = !isHeader ? headerHeight - height : 0
                     const xText = isHeader
                       ? dIdx * (hGap + width) + padding
-                      : dIdx * (hGap + width) + padding * 2
+                      : dIdx * (hGap + width) + padding * 2.4
 
                     const yText = isHeader
                       ? headerHeight - headerPadding
@@ -175,8 +175,8 @@ export default function Uml({ data = [], config }: IProps) {
                               : contentBackgroundColor
                           }
                         />
-                        {!isHeader && (
-                          <SvgIconProperty
+                        {!isHeader && k.type && (
+                          <Icon
                             x={dIdx * (hGap + width) + padding}
                             y={
                               0 +
@@ -184,6 +184,7 @@ export default function Uml({ data = [], config }: IProps) {
                               yDelta +
                               iconSize
                             }
+                            type={k.type}
                           />
                         )}
                         <text

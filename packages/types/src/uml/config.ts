@@ -30,6 +30,7 @@ export interface IUmlUserConfig {
     height?: number
     hGap?: number
     vGap?: number
+    backgroundColor?: string
   }
 }
 
@@ -63,5 +64,6 @@ export interface IUmlDefaultConfig {
     width: number
     height: number
     hGap: number
+    backgroundColor: string
   }
 }
