@@ -10,23 +10,29 @@ class StyleConfig {
 
     blockStyle: {
       header: {
-        color: '#333',
-        backgroundColor: 'lightgray',
-        height: 30
+        color: 'white',
+        backgroundColor: '#5091F1',
+        padding: 18,
+        height: 46,
+        fontSize: 16
       },
       content: {
         color: '#333',
-        backgroundColor: 'lightgray',
-        padding: 10,
-        height: 30
+        backgroundColor: 'white',
+        padding: 16,
+        height: 30,
+        fontSize: 14
       },
       border: {
-        width: 4,
+        width: 1,
         color: 'lightblue'
       },
+      icon: {
+        size: 14
+      },
       width: 400,
-      height: 30,
-      hGap: 600
+      height: 40,
+      hGap: 100
     }
   }
 

@@ -6,6 +6,8 @@ import { StyleConfig } from './config'
 
 import ArrowMaker from './components/ArrowMaker'
 
+import SvgIconProperty from './assets/icon/property.svg'
+
 interface IProps {
   data?: UmlDataArray
   config?: IUmlUserConfig
@@ -53,8 +55,20 @@ export default function Uml({ data = [], config }: IProps) {
       hGap,
       width,
       height,
-      content: { padding, backgroundColor },
-      border: { width: borderWidth }
+      header: {
+        color: headerColor,
+        backgroundColor: headerBackgroundColor,
+        padding: headerPadding,
+        height: headerHeight,
+        fontSize: headerFontSize
+      },
+      content: {
+        padding,
+        backgroundColor: contentBackgroundColor,
+        fontSize: contentFontSize
+      },
+      border: { width: borderWidth },
+      icon: { size: iconSize }
     }
   } = new StyleConfig(config).getConfig()
 
@@ -133,42 +147,62 @@ export default function Uml({ data = [], config }: IProps) {
         >
           {data.map((d, dIdx) => {
             return (
-              d.members &&
-              d.members.map((k, kIdx) => {
-                return (
-                  <g key={`${d.name}-${k.name}`}>
-                    <rect
-                      ref={node => node && setBlockRef(node, d.name, k.id)}
-                      x={dIdx * hGap}
-                      y={0 + kIdx * (height + borderWidth)}
-                      width={width}
-                      height={height}
-                      fill={backgroundColor}
-                    />
-                    <text>
-                      <tspan
-                        x={dIdx * hGap + padding}
-                        y={
-                          0 + kIdx * (height + borderWidth) + (height - padding)
-                        }
-                      >
-                        {/* block name */}
-                        {k.name}
-                      </tspan>
-                      <tspan
-                        textAnchor="end"
-                        x={dIdx * hGap + width - padding}
-                        y={
-                          0 + kIdx * (height + borderWidth) + (height - padding)
-                        }
-                      >
-                        {/* block paramDes */}
-                        {k.paramDes}
-                      </tspan>
-                    </text>
-                  </g>
-                )
-              })
+              <g key={`${d.name}-block`}>
+                {d.members &&
+                  d.members.map((k, kIdx) => {
+                    const isHeader = kIdx === 0
+                    const yDelta = !isHeader ? headerHeight - height : 0
+                    const xText = isHeader
+                      ? dIdx * (hGap + width) + padding
+                      : dIdx * (hGap + width) + padding * 2
+
+                    const yText = isHeader
+                      ? headerHeight - headerPadding
+                      : kIdx * (height + borderWidth) +
+                        (height - padding) +
+                        yDelta
+                    return (
+                      <g key={`${d.name}-${k.id}`}>
+                        <rect
+                          ref={node => node && setBlockRef(node, d.name, k.id)}
+                          x={dIdx * (hGap + width)}
+                          y={0 + kIdx * (height + borderWidth) + yDelta}
+                          width={width}
+                          height={isHeader ? headerHeight : height}
+                          fill={
+                            isHeader
+                              ? headerBackgroundColor
+                              : contentBackgroundColor
+                          }
+                        />
+                        {!isHeader && (
+                          <SvgIconProperty
+                            x={dIdx * (hGap + width) + padding}
+                            y={
+                              0 +
+                              kIdx * (height + borderWidth) +
+                              yDelta +
+                              iconSize
+                            }
+                          />
+                        )}
+                        <text
+                          y={yText}
+                          fill={isHeader ? headerColor : color}
+                          fontSize={isHeader ? headerFontSize : contentFontSize}
+                        >
+                          <tspan x={xText}>{k.name}</tspan>
+                          <tspan
+                            textAnchor="end"
+                            x={dIdx * (hGap + width) + width - padding}
+                          >
+                            {isHeader && k.type ? k.type : k.paramDes}
+                          </tspan>
+                        </text>
+                      </g>
+                    )
+                  })}
+              </g>
             )
           })}
           {linePos &&

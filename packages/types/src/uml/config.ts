@@ -7,17 +7,23 @@ export interface IUmlUserConfig {
     header?: {
       color?: string
       backgroundColor?: string
+      padding?: number
       height?: number
+      fontSize?: number
     }
     content?: {
       color?: string
       backgroundColor?: string
       padding?: number
       height?: number
+      fontSize?: number
     }
     border?: {
       width?: number
       color?: string
+    }
+    icon?: {
+      size?: number
     }
     radios?: number
     width?: number
@@ -36,17 +42,23 @@ export interface IUmlDefaultConfig {
     header: {
       color: string
       backgroundColor: string
+      padding: number
       height: number
+      fontSize: number
     }
     content: {
       color: string
       backgroundColor: string
       padding: number
       height: number
+      fontSize: number
     }
     border: {
       width: number
       color: string
+    }
+    icon: {
+      size: number
     }
     width: number
     height: number
