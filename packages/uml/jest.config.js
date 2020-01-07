@@ -15,5 +15,10 @@ module.exports = {
   testRegex: '(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$',
 
   // Module file extensions for importing
-  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node']
+  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
+
+  // https://github.com/gregberge/svgr/issues/83#issuecomment-408869426
+  moduleNameMapper: {
+    '\\.svg': '<rootDir>/__mocks__/svgrMock.js'
+  }
 }
