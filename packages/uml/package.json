@@ -6,7 +6,8 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "start": "parcel public/index.html --open",
-    "build": "tsc",
+    "copy-assets": "cp -rv src/assets/ dist/assets/",
+    "build": "tsc && npm run copy-assets",
     "test": "jest",
     "test:watch": "jest --watch",
     "storybook": "start-storybook"
