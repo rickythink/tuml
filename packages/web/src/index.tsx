@@ -32,7 +32,7 @@ export default function UmlWeb() {
         <header className="AppHeader">
           <h2>@tuml/web playground</h2>
         </header>
-        <SplitPane split="vertical" minSize={50} defaultSize="50%">
+        <SplitPane split="horizontal" minSize={50} defaultSize="36%">
           <CodeEditor
             onChange={code => {
               setCode(code)
