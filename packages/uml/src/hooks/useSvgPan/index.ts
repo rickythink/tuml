@@ -45,19 +45,27 @@ export function useSvgPan(dataIds: string): UseSvgPanHook {
 
   // https://github.com/aleofreddi/svgpan/blob/d59255197236e5936650e4cd9b1ec0b88f199188/svgpan.js#L146
   function handleWheelScale(event: WheelEvent) {
-    if ((event.ctrlKey || event.altKey) && node) {
-      event.preventDefault()
+    if (!node) return
+    event.preventDefault()
+    const ctm = new DOMMatrix(matrix)
+    if (event.ctrlKey || event.altKey) {
+      // scale
       const { offsetLeft, offsetTop } = node
       const { clientX, clientY } = event
       // 1.2 and 360 control the sensitivity
       const zoom = Math.pow(1.2, -event.deltaY / 360)
-      const ctm = new DOMMatrix(matrix)
       let mouse = new DOMPoint(clientX - offsetLeft, clientY - offsetTop)
       mouse = mouse.matrixTransform(ctm.inverse())
       const trans = new DOMMatrix()
         .translate(mouse.x, mouse.y)
         .scale(zoom)
         .translate(-mouse.x, -mouse.y)
+      setMatrix(dmatrix2Array(ctm.multiply(trans)))
+    } else {
+      // translation
+      event.preventDefault()
+      const { deltaX, deltaY } = event
+      const trans = new DOMMatrix().translate(-deltaX, -deltaY)
       setMatrix(dmatrix2Array(ctm.multiply(trans)))
     }
   }
